@@ -1,8 +1,10 @@
+import ignite.metrics
 import keras.models
 import tensorflow as tf
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from ignite.metrics import Accuracy, Loss
 import torch.optim as optim
 import numpy as np
 import pickle
@@ -20,7 +22,7 @@ import os
 
 
 class DeepCNN(nn.Module):
-    def __init__(self,  prosize, plensize, batchsize, s1, sa1, s2, sa2, s3, sa3, j1, pf1, ja1, j2, pf2, ja2, j3, pf3, ja3, n_hid3, n_hid4, n_hid5, n_out, units=30, activation=tf.keras.layers.LeakyReLU(alpha=0.2), **kwargs):
+    def __init__(self,  prosize, plensize, batchsize, s1, sa1, s2, sa2, s3, sa3, j1, pf1, ja1, j2, pf2, ja2, j3, pf3, ja3, n_hid3, n_hid4, n_hid5, n_out):
         super(DeepCNN, self).__init__(
             #conv1_pro_1=nn.C
             conv1_pro=nn.Conv2D(1, pf1, (j1, plensize), stride=s1, pad = (j1//2,0)),
@@ -54,7 +56,8 @@ class DeepCNN(nn.Module):
         loss = F.cosine_similarity(Z, interactions)
         # loss = tf.compat.v1.losses.sigmoid_cross_entropy(Z, interactions)
         # ---------------------------------------------------------------
-        accuracy = tf.keras.metrics.binary_accuracy(Z, interactions) #---
+        accuracy = ignite.metrics.Accuracy(Z, interactions)
+        # accuracy_ = tf.keras.metrics.binary_accuracy(Z, interactions) #---
         # ---------------------------------------------------------------
         print({'loss': loss, 'accuracy': accuracy}, self)
         return loss
