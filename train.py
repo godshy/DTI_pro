@@ -9,6 +9,7 @@ import os, time, sys
 import pickle
 import torch
 import torch.utils.data
+from torch.utils.data import TensorDataset, ConcatDataset, DataLoader
 import torch.nn as nn
 import torch.nn.functional as F
 from absl import app
@@ -24,6 +25,7 @@ from ignite.contrib.handlers.wandb_logger import *
 import pytorch_lightning as pl
 from ignite.engine import engine
 from ignite.engine import Events, create_supervised_trainer, create_supervised_evaluator
+from chainer import datasets
 # ------------
 # parser.add_argument('--data', '-d', default='/train')
 flags.DEFINE_string('--data', '/train', '', short_name='g')
@@ -69,7 +71,6 @@ feature_vector_seq = 20  # size of feature vector
 
 
 # -----
-
 
 def main(argv):
     START = time.time()
@@ -119,7 +120,7 @@ def main(argv):
 
         file_sequences=xp.load(FLAGS.input+'/cv_'+str(i)+'/train_reprotein.npy')
         print('Loading sequences: train_reprotein.npy', flush=True)
-        sequences = xp.asarray(file_sequences, dtype='float32').reshape(-1, 1, FLAGS.prosize, feature_vector_seq)
+        sequences = xp.asarray(file_sequences, dtype='float32').reshape((-1, 1, FLAGS.prosize, feature_vector_seq))
         # reset memory
         del file_sequences
         gc.collect()
@@ -127,7 +128,14 @@ def main(argv):
         print(interactions.shape, ecfp.shape, sequences.shape, n2vc.shape, n2vp.shape, flush=True)
 
         print('Now concatenating...', flush=True)
-        train_dataset = torch.utils.data.DataLoader(ecfp, sequences, n2vc, n2vp, interactions, shuffle=True)
+
+        dataset_ecfp = torch.utils.data.DataLoader(ecfp)
+        dataset_seq = torch.utils.data.DataLoader(sequences)
+        dataset_n2vc = torch.utils.data.DataLoader(n2vc)
+        dataset_n2vp = torch.utils.data.DataLoader(n2vp)
+        dataset_interaction = torch.utils.data.DataLoader(interactions)
+        ds_con = ConcatDataset([dataset_ecfp, dataset_seq, dataset_n2vc, dataset_n2vp, dataset_interaction])
+        train_dataset = torch.utils.data.DataLoader(ds_con, shuffle=True)
         n = int(0.8 * len(train_dataset))
         train_dataset, valid_dataset = train_dataset[:n], train_dataset[n:]
         print('train: ', len(train_dataset), flush=True)

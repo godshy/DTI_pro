@@ -60,15 +60,15 @@ class DeepCNN(nn.Module):
         return loss
 
     def predict_pro(self, seq):
-        h = F.dropout(F.leaky_relu(self.bn1_pro(self.conv1_pro(seq))), ratio=0.2) # 1st conv
-        h = F.avg_pool2d(h, (self.ja1,1), stride=self.sa1, pad=(self.ja1//2,0)) # 1st pooling
-        h = F.dropout(F.leaky_relu(self.bn2_pro(self.conv2_pro(h))), ratio=0.2) # 2nd conv
-        h = F.avg_pool2d(h, (self.ja2,1), stride=self.sa2, pad=(self.ja2//2,0)) # 2nd pooling
-        h = F.dropout(F.leaky_relu(self.bn3_pro(self.conv3_pro(h))), ratio=0.2) # 3rd conv
-        h = F.avg_pool2d(h, (self.ja3,1), stride=self.sa3, pad=(self.ja3//2,0)) # 3rd pooling
+        h = F.dropout(F.leaky_relu(self.bn1_pro(self.conv1_pro(seq))), p=0.2)  # 1st conv
+        h = F.avg_pool2d(h, (self.ja1,1), stride=self.sa1, pad=(self.ja1//2, 0))  # 1st pooling
+        h = F.dropout(F.leaky_relu(self.bn2_pro(self.conv2_pro(h))), p=0.2)  # 2nd conv
+        h = F.avg_pool2d(h, (self.ja2,1), stride=self.sa2, pad=(self.ja2//2, 0))  # 2nd pooling
+        h = F.dropout(F.leaky_relu(self.bn3_pro(self.conv3_pro(h))), p=0.2)  # 3rd conv
+        h = F.avg_pool2d(h, (self.ja3,1), stride=self.sa3, pad=(self.ja3//2, 0))  # 3rd pooling
         h_pro = F.max_pool2d(h, (self.m6,1)) # grobal max pooling, fingerprint
         #print(h_pro.shape)
-        h_pro = F.dropout(F.leaky_relu(self.fc3_pro(h_pro)), ratio=0.2)# fully connected_1
+        h_pro = F.dropout(F.leaky_relu(self.fc3_pro(h_pro)), p=0.2)# fully connected_1
         #print(h_pro.shape)
         return h_pro
 
@@ -76,12 +76,12 @@ class DeepCNN(nn.Module):
         x_compound = fp
         x_protein = self.predict_pro(seq)
         x_compound = self.fc4(torch.cat((x_compound, n2c)))
-        x_compound = F.dropout(F.leaky_relu(x_compound), ratio=0.2)
-        x_compound = F.dropout(F.leaky_relu(self.fc5(x_compound)), ratio=0.2)
+        x_compound = F.dropout(F.leaky_relu(x_compound), p=0.2)
+        x_compound = F.dropout(F.leaky_relu(self.fc5(x_compound)), p=0.2)
         x_protein = self.fc4_pro(torch.cat((x_protein, n2p)))
-        x_protein = F.dropout(F.leaky_relu(x_protein), ratio=0.2)
+        x_protein = F.dropout(F.leaky_relu(x_protein), p=0.2)
         #print(x_protein.shape)
-        x_protein = F.dropout(F.leaky_relu(self.fc5_pro(x_protein)), ratio=0.2)
+        x_protein = F.dropout(F.leaky_relu(self.fc5_pro(x_protein)), p=0.2)
         #print(x_protein.shape)
         y = x_compound * x_protein
         return y
