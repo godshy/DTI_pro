@@ -26,9 +26,13 @@ import pytorch_lightning as pl
 from ignite.engine import engine
 from ignite.engine import Events, create_supervised_trainer, create_supervised_evaluator
 from chainer import datasets
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+import urllib.request
+
 # ------------
 # parser.add_argument('--data', '-d', default='/train')
-flags.DEFINE_string('--data', '/train', '', short_name='g')
+flags.DEFINE_string('--data', '/train', '')
 # ------------
 flags.DEFINE_integer('gpu', 1, '-g=GPU_ID or --gpu=GPU_ID', short_name='g')  # -g=id or --gpu=id
 flags.DEFINE_integer('batch_size', 100, '--batch_size=MINI_BATCH_SIZE')  # 100 batches of 1/150 epoch
@@ -77,7 +81,7 @@ def main(argv):
     del argv  # Unused.
     print(FLAGS.gpu)
     print('GPU: ', FLAGS.gpu)
-    print('# Minibatch-size: ', FLAGS.batchsize)
+    print('# Minibatch-size: ', FLAGS.batch_size)
     print('')
 
     #-------------------------------
@@ -103,9 +107,9 @@ def main(argv):
             pID = [s.strip() for s in f.readlines()]
         print('Loading proIDs: train_proIDs.txt')
         n2v_c, n2v_p = [], []
-        with open('./data_multi/modelpp.pickle', mode='rb') as f:
+        with open('./modelpp.pickle', mode='rb') as f:
             modelpp = pickle.load(f)
-        with open('./data_multi/modelcc.pickle', mode='rb') as f:
+        with open('./modelcc.pickle', mode='rb') as f:
             modelcc = pickle.load(f)
         for j in cID:
             n2v_c.append(modelcc.wv[str(j)])
@@ -120,7 +124,7 @@ def main(argv):
 
         file_sequences=xp.load(FLAGS.input+'/cv_'+str(i)+'/train_reprotein.npy')
         print('Loading sequences: train_reprotein.npy', flush=True)
-        sequences = xp.asarray(file_sequences, dtype='float32').reshape((-1, 1, FLAGS.prosize, feature_vector_seq))
+        sequences = xp.asarray(file_sequences, dtype='float32').reshape((-1, 1, FLAGS.pro_size, feature_vector_seq))
         # reset memory
         del file_sequences
         gc.collect()
@@ -137,9 +141,12 @@ def main(argv):
         ds_con = ConcatDataset([dataset_ecfp, dataset_seq, dataset_n2vc, dataset_n2vp, dataset_interaction])
         train_dataset = torch.utils.data.DataLoader(ds_con, shuffle=True)
         n = int(0.8 * len(train_dataset))
-        train_dataset, valid_dataset = train_dataset[:n], train_dataset[n:]
-        print('train: ', len(train_dataset), flush=True)
-        print('valid: ', len(valid_dataset), flush=True)
+        print(type(train_dataset))
+        train_dataset = torch.utils.data.Subset(train_dataset, indices=n)
+        valid_dataset = torch.utils.data.Subset(train_dataset, indices=n)
+        # train_dataset, valid_dataset = train_dataset[:n], train_dataset[n:]
+        # print('train: ', len(train_dataset), flush=True)
+        # print('valid: ', len(valid_dataset), flush=True)
 
         print('pattern: ', i, flush=True)
         output_dir = FLAGS.output+'/'+'ecfpN2vc_mSGD'+'/'+'pattern'+str(i)
@@ -153,7 +160,7 @@ def main(argv):
         #-------------------------------
         # Set up a neural network to train
         print('Set up a neural network to train', flush=True)
-        model = MV.DeepCNN(FLAGS.prosize, feature_vector_seq, FLAGS.batchsize, FLAGS.s1, FLAGS.sa1, FLAGS.s2, FLAGS.sa2, FLAGS.s3, FLAGS.sa3, FLAGS.j1, FLAGS.pf1, FLAGS.ja1, FLAGS.j2, FLAGS.pf2, FLAGS.ja2, FLAGS.j3, FLAGS.pf3, FLAGS.ja3, FLAGS.n_hid3, FLAGS.n_hid4, FLAGS.n_hid5, FLAGS.n_out)
+        model = MV.DeepCNN(FLAGS.pro_size, feature_vector_seq, FLAGS.batch_size, FLAGS.s1, FLAGS.sa1, FLAGS.s2, FLAGS.sa2, FLAGS.s3, FLAGS.sa3, FLAGS.j1, FLAGS.pf1, FLAGS.ja1, FLAGS.j2, FLAGS.pf2, FLAGS.ja2, FLAGS.j3, FLAGS.pf3, FLAGS.ja3, FLAGS.n_hid3, FLAGS.n_hid4, FLAGS.n_hid5, FLAGS.n_out)
         #-------------------------------
         # Make a specified GPU current
 

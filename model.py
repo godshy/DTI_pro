@@ -1,6 +1,5 @@
 import ignite.metrics
 import keras.models
-import tensorflow as tf
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -24,19 +23,19 @@ import os
 class DeepCNN(nn.Module):
     def __init__(self,  prosize, plensize, batchsize, s1, sa1, s2, sa2, s3, sa3, j1, pf1, ja1, j2, pf2, ja2, j3, pf3, ja3, n_hid3, n_hid4, n_hid5, n_out):
         super(DeepCNN, self).__init__(
-            #conv1_pro_1=nn.C
-            conv1_pro=nn.Conv2D(1, pf1, (j1, plensize), stride=s1, pad = (j1//2,0)),
+            conv1_pro=nn.Conv2d(1, pf1, (j1, plensize), stride=s1, padding=(j1//2,0)),
             bn1_pro=nn.BatchNorm2d(pf1),
-            conv2_pro=nn.Conv2D(pf1, pf2, (j2, 1), stride=s2, pad= (j2//2,0)),
+            conv2_pro=nn.Conv2d(pf1, pf2, (j2, 1), stride=s2, padding=(j2//2,0)),
             bn2_pro=nn.BatchNorm2d(pf2),
-            conv3_pro=nn.Conv2D(pf2, pf3, (j3, 1), stride=s3, pad = (j3//2,0)),
+            conv3_pro=nn.Conv2d(pf2, pf3, (j3, 1), stride=s3, padding=(j3//2,0)),
             bn3_pro=nn.BatchNorm2d(pf3),
-            fc4=nn.Linear(None, n_hid4),
-            fc5=nn.Linear(None, n_hid5),
-            fc3_pro=nn.Linear(None, n_hid3),
-            fc4_pro=nn.Linear(None, n_hid4),
-            fc5_pro=nn.Linear(None, n_hid5),
-            fc6=nn.Linear(None, n_out)
+
+            fc4=nn.Linear(1, n_hid4),
+            fc5=nn.Linear(2, n_hid5),
+            fc3_pro=nn.Linear(3, n_hid3),
+            fc4_pro=nn.Linear(4, n_hid4),
+            fc5_pro=nn.Linear(5, n_hid5),
+            fc6=nn.Linear(6, n_out)
         )
         self.n_hid3, self.n_hid4, self.n_hid5, self.n_out = n_hid3, n_hid4, n_hid5, n_out
         self.prosize, self.plensize = prosize, plensize
@@ -69,7 +68,7 @@ class DeepCNN(nn.Module):
         h = F.avg_pool2d(h, (self.ja2,1), stride=self.sa2, pad=(self.ja2//2, 0))  # 2nd pooling
         h = F.dropout(F.leaky_relu(self.bn3_pro(self.conv3_pro(h))), p=0.2)  # 3rd conv
         h = F.avg_pool2d(h, (self.ja3,1), stride=self.sa3, pad=(self.ja3//2, 0))  # 3rd pooling
-        h_pro = F.max_pool2d(h, (self.m6,1)) # grobal max pooling, fingerprint
+        h_pro = F.max_pool2d(h, (self.m6,1)) # global max pooling, fingerprint
         #print(h_pro.shape)
         h_pro = F.dropout(F.leaky_relu(self.fc3_pro(h_pro)), p=0.2)# fully connected_1
         #print(h_pro.shape)

@@ -10,6 +10,9 @@ import numpy as np
 from rdkit import Chem
 from rdkit.Chem import AllChem
 from pyensembl import EnsemblRelease
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+import urllib.request
 
 parser = arg.ArgumentParser(description='ecfpWD_n2v')
 parser.add_argument('--input', '-i', default='./dataset_hard')
