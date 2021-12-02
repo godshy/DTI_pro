@@ -24,12 +24,12 @@ import os
 class DeepCNN(nn.Module):
     def __init__(self, prosize, plensize, batchsize, s1, sa1, s2, sa2, s3, sa3, j1, pf1, ja1, j2, pf2, ja2, j3, pf3, ja3, n_hid3, n_hid4, n_hid5, n_out, *args, **kwargs):
         super(DeepCNN, self).__init__()
-        self.conv1_pro=nn.Conv2d(1, pf1, (j1, plensize), stride=(s1, 0), padding=(int(j1//2), 0))
+        self.conv1_pro=nn.Conv2d(1, pf1, (j1, plensize), stride=s1, padding=(int(j1//2), 0))
         # conv1_pro=nn.Conv2d(1, pf1, (j1, plensize), stride=s1, padding=(j1//2, 0)),
         self.bn1_pro=nn.BatchNorm2d(pf1)
-        self.conv2_pro=nn.Conv2d(pf1, pf2, (j2, 1), stride=(s2, 0), padding=(int(j2//2), 0))
+        self.conv2_pro=nn.Conv2d(pf1, pf2, (j2, 1), stride=s2, padding=(int(j2//2), 0))
         self.bn2_pro=nn.BatchNorm2d(pf2)
-        self.conv3_pro=nn.Conv2d(pf2, pf3, (j3, 1), stride=(s3, 0), padding=(int(j3//2), 0))
+        self.conv3_pro=nn.Conv2d(pf2, pf3, (j3, 1), stride=s3, padding=(int(j3//2), 0))
         self.bn3_pro=nn.BatchNorm2d(pf3)
         self.fc4=nn.Linear(1, n_hid4)
         self.fc5=nn.Linear(2, n_hid5)

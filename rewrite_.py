@@ -58,10 +58,16 @@ def seq_cnn(seq, plen_size, pro_size):
 
 feature_vector_seq = 20
 pro_size = 5762
+device = 'cpu'
+if torch.cuda.is_available():
+    device = 'cuda'
+print('use'+device)
+
 for i in range(5):
     file_sequences = np.load('./dataset_hard'+'/cv_'+str(i)+'/train_reprotein.npy')
     print('Loading sequences: train_reprotein.npy', flush=True)
     sequences = np.asarray(file_sequences, dtype='float32').reshape((-1, 1, pro_size, feature_vector_seq))
-    seq_cnn(sequences, feature_vector_seq, pro_size)
+    seq_cnn(sequences, feature_vector_seq, pro_size).to(device)
+    print(i)
 
 print('OVER')
