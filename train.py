@@ -173,6 +173,8 @@ def main(argv):
         # Set up a neural network to train
         print('Set up a neural network to train', flush=True)
         model = MV.DeepCNN(FLAGS.pro_size, feature_vector_seq, FLAGS.batch_size, FLAGS.s1, FLAGS.sa1, FLAGS.s2, FLAGS.sa2, FLAGS.s3, FLAGS.sa3, FLAGS.j1, FLAGS.pf1, FLAGS.ja1, FLAGS.j2, FLAGS.pf2, FLAGS.ja2, FLAGS.j3, FLAGS.pf3, FLAGS.ja3, FLAGS.n_hid3, FLAGS.n_hid4, FLAGS.n_hid5, FLAGS.n_out).to(device)
+        if torch.cuda.is_available():
+            model.cuda()
         # optimizer = chainer.optimizers.MomentumSGD(lr=0.01, momentum=0.9)
         optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=0.00001)
 
@@ -188,7 +190,7 @@ def main(argv):
         # Set up a trainer
         print('Trainer is setting up...', flush=True)
 
-        trainer = ignite.engine.create_supervised_trainer(model, optimizer, F.nll_loss)
+        trainer = ignite.engine.create_supervised_trainer(model, optimizer, F.nll_loss, device=device)
         evaluater = ignite.engine.create_supervised_evaluator(model, metrics={'accuracy': Accuracy(), 'nll': Loss(F.nll_loss)}, device=device)
         # train_iter = chainer.iterators.SerialIterator(train_dataset, batch_size= FLAGS.batchsize, shuffle=True)
         #test_iter = chainer.iterators.SerialIterator(valid_dataset, batch_size= FLAGS.batchsize, repeat=False, shuffle=True)
@@ -201,7 +203,7 @@ def main(argv):
         wandb_logger.watch(model)
         # Run the training
         # trainer.run()
-        print('LOSS:', model(ecfp, sequences, n2vc, n2vp, interactions))
+        print('LOSS:', model(ecfp, sequences, n2vc, n2vp, interactions).to(device))
         END = time.time()
         print('Nice, your Learning Job is done.　Total time is {} sec．'.format(END-START))
 
