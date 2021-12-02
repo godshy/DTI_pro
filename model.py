@@ -8,6 +8,7 @@ import torch.optim as optim
 import numpy as np
 import pickle
 import os
+# import chainer.links as L
 
 
 
@@ -23,18 +24,18 @@ import os
 class DeepCNN(nn.Module):
     def __init__(self, prosize, plensize, batchsize, s1, sa1, s2, sa2, s3, sa3, j1, pf1, ja1, j2, pf2, ja2, j3, pf3, ja3, n_hid3, n_hid4, n_hid5, n_out, *args, **kwargs):
         super(DeepCNN, self).__init__()
-        self.conv1_pro=nn.Conv2d(1, pf1, (j1, plensize), stride=s1, padding=(j1//2, 0)),
+        self.conv1_pro=nn.Conv2d(1, pf1, (j1, plensize), stride=(s1, 0), padding=(int(j1//2), 0))
         # conv1_pro=nn.Conv2d(1, pf1, (j1, plensize), stride=s1, padding=(j1//2, 0)),
-        self.bn1_pro=nn.BatchNorm2d(pf1),
-        self.conv2_pro=nn.Conv2d(pf1, pf2, (j2, 1), stride=s2, padding=(j2//2, 0)),
-        self.bn2_pro=nn.BatchNorm2d(pf2),
-        self.conv3_pro=nn.Conv2d(pf2, pf3, (j3, 1), stride=s3, padding=(j3//2, 0)),
-        self.bn3_pro=nn.BatchNorm2d(pf3),
-        self.fc4=nn.Linear(1, n_hid4),
-        self.fc5=nn.Linear(2, n_hid5),
-        self.fc3_pro=nn.Linear(3, n_hid3),
-        self.fc4_pro=nn.Linear(4, n_hid4),
-        self.fc5_pro=nn.Linear(5, n_hid5),
+        self.bn1_pro=nn.BatchNorm2d(pf1)
+        self.conv2_pro=nn.Conv2d(pf1, pf2, (j2, 1), stride=(s2, 0), padding=(int(j2//2), 0))
+        self.bn2_pro=nn.BatchNorm2d(pf2)
+        self.conv3_pro=nn.Conv2d(pf2, pf3, (j3, 1), stride=(s3, 0), padding=(int(j3//2), 0))
+        self.bn3_pro=nn.BatchNorm2d(pf3)
+        self.fc4=nn.Linear(1, n_hid4)
+        self.fc5=nn.Linear(2, n_hid5)
+        self.fc3_pro=nn.Linear(3, n_hid3)
+        self.fc4_pro=nn.Linear(4, n_hid4)
+        self.fc5_pro=nn.Linear(5, n_hid5)
         self.fc6=nn.Linear(6, n_out)
 
         self.n_hid3, self.n_hid4, self.n_hid5, self.n_out = n_hid3, n_hid4, n_hid5, n_out
@@ -62,14 +63,15 @@ class DeepCNN(nn.Module):
         return loss
 
     def predict_pro(self, seq):
+        seq = torch.from_numpy(seq.astype(np.float32)).clone()   # need to do a change into tensor
         h = F.dropout(F.leaky_relu(self.bn1_pro(self.conv1_pro(seq))), p=0.2)  # 1st conv
-        h = F.avg_pool2d(h, (self.ja1,1), stride=self.sa1, pad=(self.ja1//2, 0))  # 1st pooling
+        h = F.avg_pool2d(h, (self.ja1, 1), stride=self.sa1, padding=(self.ja1//2, 0))  # 1st pooling
         h = F.dropout(F.leaky_relu(self.bn2_pro(self.conv2_pro(h))), p=0.2)  # 2nd conv
-        h = F.avg_pool2d(h, (self.ja2,1), stride=self.sa2, pad=(self.ja2//2, 0))  # 2nd pooling
+        h = F.avg_pool2d(h, (self.ja2,1), stride=self.sa2, padding=(self.ja2//2, 0))  # 2nd pooling
         h = F.dropout(F.leaky_relu(self.bn3_pro(self.conv3_pro(h))), p=0.2)  # 3rd conv
-        h = F.avg_pool2d(h, (self.ja3,1), stride=self.sa3, pad=(self.ja3//2, 0))  # 3rd pooling
-        h_pro = F.max_pool2d(h, (self.m6,1)) # global max pooling, fingerprint
-        #print(h_pro.shape)
+        h = F.avg_pool2d(h, (self.ja3,1), stride=self.sa3, padding=(self.ja3//2, 0))  # 3rd pooling
+        h_pro = F.max_pool2d(h, (self.m6,1))  # global max pooling, fingerprint
+        print('h_pro_shape:', h_pro.shape)
         h_pro = F.dropout(F.leaky_relu(self.fc3_pro(h_pro)), p=0.2)# fully connected_1
         #print(h_pro.shape)
         return h_pro

@@ -139,11 +139,14 @@ def main(argv):
         dataset_n2vp = torch.utils.data.DataLoader(n2vp)
         dataset_interaction = torch.utils.data.DataLoader(interactions)
         ds_con = ConcatDataset([dataset_ecfp, dataset_seq, dataset_n2vc, dataset_n2vp, dataset_interaction])
-        train_dataset = torch.utils.data.DataLoader(ds_con, shuffle=True)
-        n = int(0.8 * len(train_dataset))
-        print(type(train_dataset))
-        train_dataset = torch.utils.data.Subset(train_dataset, indices=n)
-        valid_dataset = torch.utils.data.Subset(train_dataset, indices=n)
+        train_size = int(len(ds_con) * 0.8)
+        val_size = int(len(ds_con)) - train_size
+        train_dataset, valid_dataset = torch.utils.data.random_split(ds_con, [train_size, val_size])
+        train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=FLAGS.batch_size, shuffle=True)
+        valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=FLAGS.batch_size, shuffle=True)
+
+
+
         # train_dataset, valid_dataset = train_dataset[:n], train_dataset[n:]
         # print('train: ', len(train_dataset), flush=True)
         # print('valid: ', len(valid_dataset), flush=True)
@@ -154,24 +157,25 @@ def main(argv):
 
         #-------------------------------
         #reset memory again
-        del n, sequences, interactions, ecfp, n2vc, n2vp
-        gc.collect()
+        # del sequences, interactions, ecfp, n2vc, n2vp
+        # gc.collect()
+
+        # Setup an optimizer
+
+        #-------------------------------
+        # Make a specified GPU current
+        device = 'cpu'
+        if torch.cuda.is_available():
+            device = 'cuda'
+        print('use'+device)
 
         #-------------------------------
         # Set up a neural network to train
         print('Set up a neural network to train', flush=True)
-        model = MV.DeepCNN(FLAGS.pro_size, feature_vector_seq, FLAGS.batch_size, FLAGS.s1, FLAGS.sa1, FLAGS.s2, FLAGS.sa2, FLAGS.s3, FLAGS.sa3, FLAGS.j1, FLAGS.pf1, FLAGS.ja1, FLAGS.j2, FLAGS.pf2, FLAGS.ja2, FLAGS.j3, FLAGS.pf3, FLAGS.ja3, FLAGS.n_hid3, FLAGS.n_hid4, FLAGS.n_hid5, FLAGS.n_out)
-        #-------------------------------
-        # Make a specified GPU current
-
-        # Setup an optimizer
-        device = 'cpu'
-        if torch.cuda.is_available():
-            device = 'cuda'
-
-
-
+        model = MV.DeepCNN(FLAGS.pro_size, feature_vector_seq, FLAGS.batch_size, FLAGS.s1, FLAGS.sa1, FLAGS.s2, FLAGS.sa2, FLAGS.s3, FLAGS.sa3, FLAGS.j1, FLAGS.pf1, FLAGS.ja1, FLAGS.j2, FLAGS.pf2, FLAGS.ja2, FLAGS.j3, FLAGS.pf3, FLAGS.ja3, FLAGS.n_hid3, FLAGS.n_hid4, FLAGS.n_hid5, FLAGS.n_out).to(device)
         # optimizer = chainer.optimizers.MomentumSGD(lr=0.01, momentum=0.9)
+        optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=0.00001)
+
 
         #-------------------------------
         # L2 regularization(weight decay)
@@ -183,7 +187,7 @@ def main(argv):
         #-------------------------------
         # Set up a trainer
         print('Trainer is setting up...', flush=True)
-        optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=0.00001)
+
         trainer = ignite.engine.create_supervised_trainer(model, optimizer, F.nll_loss)
         evaluater = ignite.engine.create_supervised_evaluator(model, metrics={'accuracy': Accuracy(), 'nll': Loss(F.nll_loss)}, device=device)
         # train_iter = chainer.iterators.SerialIterator(train_dataset, batch_size= FLAGS.batchsize, shuffle=True)
@@ -196,8 +200,8 @@ def main(argv):
         wandb_logger.attach_opt_params_handler(trainer, event_name=Events.ITERATION_STARTED, optimizer=optimizer,)
         wandb_logger.watch(model)
         # Run the training
-        trainer.run(train_dataset)
-
+        # trainer.run()
+        print('LOSS:', model(ecfp, sequences, n2vc, n2vp, interactions))
         END = time.time()
         print('Nice, your Learning Job is done.　Total time is {} sec．'.format(END-START))
 
