@@ -183,20 +183,20 @@ def main(argv):
         #-------------------------------
         # Set up a trainer
         print('Trainer is setting up...', flush=True)
-        optimizer = torch.optim.SGD(lr=0.01, momentum=0.9, weight_decay=0.00001)
-        trainer = ignite.engine.create_supervised_trainer(model, optimizer, F.nll_loss, device=device+FLAGS.gpu)
+        optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=0.00001)
+        trainer = ignite.engine.create_supervised_trainer(model, optimizer, F.nll_loss)
         evaluater = ignite.engine.create_supervised_evaluator(model, metrics={'accuracy': Accuracy(), 'nll': Loss(F.nll_loss)}, device=device)
         # train_iter = chainer.iterators.SerialIterator(train_dataset, batch_size= FLAGS.batchsize, shuffle=True)
         #test_iter = chainer.iterators.SerialIterator(valid_dataset, batch_size= FLAGS.batchsize, repeat=False, shuffle=True)
         desc = "ITERATION - loss: {:.2f}"
-        pbar = tqdm(initial=0, leave=False, total=len(train_dataset),desc=desc.format(0))
-        wandb_logger = WandBLogger(object="pytorch-ignite-integration", name='DTI', config={"max_epochs": FLAGS.epoch, "batch_size":FLAGS.batch_size}, tags=["pytorch-ignite", "DTI"])
-        wandb_logger.attach_output_handler(trainer, event_name=Events.ITERATION_COMPLETED, tags="training", output_transform=lambda loss: {"loss": loss})
+       # pbar = tqdm(initial=0, leave=False, total=len(train_dataset), desc=desc.format(0))
+        wandb_logger = WandBLogger(name='DTI', config={"max_epochs": FLAGS.epoch, "batch_size": FLAGS.batch_size}, tags=["pytorch-ignite", "DTI"])
+        wandb_logger.attach_output_handler(trainer, event_name=Events.ITERATION_COMPLETED, tag="training", output_transform=lambda loss: {"loss": loss})
         wandb_logger.attach_output_handler(evaluater, event_name=Events.EPOCH_COMPLETED, tag="training", metric_names=["nll", "accuracy"], global_step_transform=lambda *_: trainer.state.iteration)
-        wandb_logger.attach_opt_params_handler(trainer, event_name=Events.ITERATION_STARTED,optimizer=optimizer,)
+        wandb_logger.attach_opt_params_handler(trainer, event_name=Events.ITERATION_STARTED, optimizer=optimizer,)
         wandb_logger.watch(model)
         # Run the training
-        trainer.run()
+        trainer.run(train_dataset)
 
         END = time.time()
         print('Nice, your Learning Job is done.　Total time is {} sec．'.format(END-START))
