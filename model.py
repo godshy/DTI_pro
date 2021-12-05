@@ -64,6 +64,8 @@ class DeepCNN(nn.Module):
 
     def predict_pro(self, seq):
         seq = torch.from_numpy(seq.astype(np.float32)).clone()   # need to do a change into tensor
+        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        seq.to(device)
         h = F.dropout(F.leaky_relu(self.bn1_pro(self.conv1_pro(seq))), p=0.2)  # 1st conv
         h = F.avg_pool2d(h, (self.ja1, 1), stride=self.sa1, padding=(self.ja1//2, 0))  # 1st pooling
         h = F.dropout(F.leaky_relu(self.bn2_pro(self.conv2_pro(h))), p=0.2)  # 2nd conv
