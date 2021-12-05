@@ -29,6 +29,7 @@ def seq_cnn(seq, plen_size, pro_size):
     bn2_pro = nn.BatchNorm2d(pf2)
     conv3_pro = nn.Conv2d(pf2, pf3, (j3, 1), stride=s3, padding=(int(j3//2), 0), padding_mode='zeros')
     bn3_pro = nn.BatchNorm2d(pf3)
+
     m1 = (pro_size+(j1//2*2)-j1)//s1+1
     m2 = (m1+(ja1//2*2)-ja1)//sa1+1
     m3 = (m2+(j2//2*2)-j2)//s2+1
@@ -43,6 +44,7 @@ def seq_cnn(seq, plen_size, pro_size):
     # problem
     bn_output = bn1_pro(output)
     h = F.dropout(F.leaky_relu(bn_output), p=0.2)  # 1st conv
+    print('end of 1st conv')
     h = F.avg_pool2d(h, (ja1, 1), stride=sa1, padding=(ja1//2, 0))  # 1st pooling
     h = F.dropout(F.leaky_relu(bn2_pro(conv2_pro(h))), p=0.2)  # 2nd conv
     h = F.avg_pool2d(h, (ja2, 1), stride=sa2, padding=(ja2//2, 0))  # 2nd pooling
@@ -63,11 +65,12 @@ if torch.cuda.is_available():
     device = 'cuda'
 print('use'+device)
 
-for i in range(5):
-    file_sequences = np.load('./dataset_hard'+'/cv_'+str(i)+'/train_reprotein.npy')
-    print('Loading sequences: train_reprotein.npy', flush=True)
-    sequences = np.asarray(file_sequences, dtype='float32').reshape((-1, 1, pro_size, feature_vector_seq))
-    seq_cnn(sequences, feature_vector_seq, pro_size).to(device)
-    print(i)
+
+file_sequences = np.load('./dataset_hard'+'/cv_'+str(0)+'/train_reprotein.npy')
+print('Loading sequences: train_reprotein.npy', flush=True)
+sequences = np.asarray(file_sequences, dtype='float32').reshape((-1, 1, pro_size, feature_vector_seq))
+# type: numpy_array ---- torch.tensor
+seq_cnn(sequences, feature_vector_seq, pro_size).to(device)
+
 
 print('OVER')
