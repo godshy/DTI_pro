@@ -1,36 +1,22 @@
-###
-# Feature extraction on sequences
-#
-###
 
-import torchvision
-from ignite import engine
-import gc
 import os, time, sys
 import pickle
 import torch
 import torch.utils.data
 from torch.utils.data import TensorDataset, ConcatDataset, DataLoader
-import torch.nn as nn
 import torch.nn.functional as F
 from absl import app
 from absl import flags
 from ignite.metrics import Accuracy, Loss
-from pyensembl import EnsemblRelease
-from absl import logging
-import signal
 import numpy as np
 import model as MV
-from tqdm import tqdm
-from ignite.contrib.handlers.wandb_logger import *
-import pytorch_lightning as pl
-from ignite.engine import engine
 from ignite.engine import Events, create_supervised_trainer, create_supervised_evaluator
-from chainer import datasets
 import ssl
 import gc
+from ignite.handlers import ModelCheckpoint
+
 ssl._create_default_https_context = ssl._create_unverified_context
-import urllib.request
+
 
 # ------------
 # parser.add_argument('--data', '-d', default='/train')
@@ -145,7 +131,7 @@ def main(argv):
         val_size = int(len(ds_con)) - train_size
         train_dataset, valid_dataset = torch.utils.data.random_split(ds_con, [train_size, val_size])
         train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=FLAGS.batch_size, shuffle=True)
-        valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=FLAGS.batch_size, shuffle=True)
+        test_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=FLAGS.batch_size, shuffle=True)
 
 
 
@@ -192,19 +178,49 @@ def main(argv):
         # Set up a trainer
         print('Trainer is setting up...', flush=True)
 
-        trainer = engine.create_supervised_trainer(model, optimizer, F.nll_loss, device=device)
-        evaluater = engine.create_supervised_evaluator(model, metrics={'accuracy': Accuracy(), 'nll': Loss(F.nll_loss)}, device=device)
-        # train_iter = chainer.iterators.SerialIterator(train_dataset, batch_size= FLAGS.batchsize, shuffle=True)
-        #test_iter = chainer.iterators.SerialIterator(valid_dataset, batch_size= FLAGS.batchsize, repeat=False, shuffle=True)
-        desc = "ITERATION - loss: {:.2f}"
-       # pbar = tqdm(initial=0, leave=False, total=len(train_dataset), desc=desc.format(0))
-        wandb_logger = WandBLogger(name='DTI', config={"max_epochs": FLAGS.epoch, "batch_size": FLAGS.batch_size}, tags=["pytorch-ignite", "DTI"])
-        wandb_logger.attach_output_handler(trainer, event_name=Events.ITERATION_COMPLETED, tag="training", output_transform=lambda loss: {"loss": loss})
-        wandb_logger.attach_output_handler(evaluater, event_name=Events.EPOCH_COMPLETED, tag="training", metric_names=["nll", "accuracy"], global_step_transform=lambda *_: trainer.state.iteration)
-        wandb_logger.attach_opt_params_handler(trainer, event_name=Events.ITERATION_STARTED, optimizer=optimizer,)
-        wandb_logger.watch(model)
-        # Run the training
-        # trainer.run()
+        trainer = create_supervised_trainer(model, optimizer, F.nll_loss, device=device)
+        evaluator = create_supervised_evaluator(model, metrics={'accuracy': Accuracy(), 'nll': Loss(F.nll_loss)}, device=device)
+        training_history = {'accuracy': [], 'loss': []}
+        validation_history = {'accuracy': [], 'loss': []}
+
+        @trainer.on(Events.EPOCH_COMPLETED)
+        def log_training_results(engine):
+            evaluator.run(train_loader)
+            metrics = evaluator.state.metrics
+            avg_accuracy = metrics['accuracy']
+            avg_nll = metrics['nll']
+            training_history['accuracy'].append(avg_accuracy)
+            training_history['loss'].append(avg_nll)
+            print(
+                "Training Results - Epoch: {}  Avg accuracy: {:.2f} Avg loss: {:.2f}"
+                .format(engine.state.epoch, avg_accuracy, avg_nll)
+            )
+
+        @trainer.on(Events.EPOCH_COMPLETED)
+        def log_validation_results(engine):
+            evaluator.run(test_loader)
+            metrics = evaluator.state.metrics
+            avg_accuracy = metrics['accuracy']
+            avg_nll = metrics['nll']
+            validation_history['accuracy'].append(avg_accuracy)
+            validation_history['loss'].append(avg_nll)
+            print(
+                "Validation Results - Epoch: {}  Avg accuracy: {:.2f} Avg loss: {:.2f}"
+                .format(engine.state.epoch, avg_accuracy, avg_nll))
+
+        checkpointer = ModelCheckpoint(
+            './models',
+            'model',
+            save_interval=1,
+            n_saved=2,
+            create_dir=True,
+            save_as_state_dict=True,
+            require_empty=False,
+        )
+        trainer.add_event_handler(Events.EPOCH_COMPLETED, checkpointer, {'Model': model})
+
+        max_epoch = FLAGS.epoch
+        trainer.run(train_loader, max_epochs=max_epoch)
         print('LOSS:', model(train_loader))
         END = time.time()
         print('Nice, your Learning Job is done.　Total time is {} sec．'.format(END-START))

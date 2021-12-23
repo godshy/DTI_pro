@@ -42,6 +42,7 @@ def seq_cnn(seq, plen_size, pro_size):
     print(type(seq))
     seq = torch.from_numpy(seq.astype(np.float32)).clone()
     print(type(seq))
+    seq.to(device)
     output = conv1_pro(seq)
     del seq
     gc.collect()
@@ -80,5 +81,6 @@ print('Loading sequences: train_reprotein.npy', flush=True)
 sequences = np.asarray(file_sequences, dtype='float32').reshape((-1, 1, pro_size, feature_vector_seq))
 # type: numpy_array ---- torch.tensor
 seq_cnn(sequences, feature_vector_seq, pro_size).to(device)
+
 
 print('OVER')

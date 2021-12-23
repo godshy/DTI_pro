@@ -31,12 +31,12 @@ class DeepCNN(nn.Module):
         self.bn2_pro=nn.BatchNorm2d(pf2)
         self.conv3_pro=nn.Conv2d(pf2, pf3, (j3, 1), stride=s3, padding=(int(j3//2), 0))
         self.bn3_pro=nn.BatchNorm2d(pf3)
-        self.fc4=nn.Linear(1, n_hid4)
-        self.fc5=nn.Linear(2, n_hid5)
-        self.fc3_pro=nn.Linear(3, n_hid3)
-        self.fc4_pro=nn.Linear(4, n_hid4)
-        self.fc5_pro=nn.Linear(5, n_hid5)
-        self.fc6=nn.Linear(6, n_out)
+        self.fc4=nn.Linear(plensize, n_hid4)
+        self.fc5=nn.Linear(n_hid4, n_hid5)
+        self.fc3_pro=nn.Linear(prosize, n_hid3)
+        self.fc4_pro=nn.Linear(n_hid3, n_hid4)
+        self.fc5_pro=nn.Linear(n_hid4, n_hid5)
+        self.fc6=nn.Linear(n_hid5, n_out)
 
         self.n_hid3, self.n_hid4, self.n_hid5, self.n_out = n_hid3, n_hid4, n_hid5, n_out
         self.prosize, self.plensize = prosize, plensize
