@@ -28,6 +28,7 @@ from ignite.engine import engine
 from ignite.engine import Events, create_supervised_trainer, create_supervised_evaluator
 from chainer import datasets
 import ssl
+import gc
 ssl._create_default_https_context = ssl._create_unverified_context
 import urllib.request
 

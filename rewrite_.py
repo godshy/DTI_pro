@@ -1,3 +1,5 @@
+import gc
+
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
@@ -41,8 +43,13 @@ def seq_cnn(seq, plen_size, pro_size):
     seq = torch.from_numpy(seq.astype(np.float32)).clone()
     print(type(seq))
     output = conv1_pro(seq)
+    del seq
+    gc.collect()
     # problem
     bn_output = bn1_pro(output)
+    del output
+    gc.collect()
+    print('batch normalization after ')
     h = F.dropout(F.leaky_relu(bn_output), p=0.2)  # 1st conv
     print('end of 1st conv')
     h = F.avg_pool2d(h, (ja1, 1), stride=sa1, padding=(ja1//2, 0))  # 1st pooling
@@ -71,6 +78,5 @@ print('Loading sequences: train_reprotein.npy', flush=True)
 sequences = np.asarray(file_sequences, dtype='float32').reshape((-1, 1, pro_size, feature_vector_seq))
 # type: numpy_array ---- torch.tensor
 seq_cnn(sequences, feature_vector_seq, pro_size).to(device)
-
 
 print('OVER')
