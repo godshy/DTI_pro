@@ -121,11 +121,11 @@ def main(argv):
 
         print('Now concatenating...', flush=True)
 
-        dataset_ecfp = torch.utils.data.DataLoader(ecfp)
-        dataset_seq = torch.utils.data.DataLoader(sequences)
-        dataset_n2vc = torch.utils.data.DataLoader(n2vc)
-        dataset_n2vp = torch.utils.data.DataLoader(n2vp)
-        dataset_interaction = torch.utils.data.DataLoader(interactions)
+        dataset_ecfp = torch.utils.data.Dataset(ecfp)
+        dataset_seq = torch.utils.data.Datasetr(sequences)
+        dataset_n2vc = torch.utils.data.Dataset(n2vc)
+        dataset_n2vp = torch.utils.data.Dataset(n2vp)
+        dataset_interaction = torch.utils.data.Dataset(interactions)
         ds_con = ConcatDataset([dataset_ecfp, dataset_seq, dataset_n2vc, dataset_n2vp, dataset_interaction])
         train_size = int(len(ds_con) * 0.8)
         val_size = int(len(ds_con)) - train_size
@@ -219,8 +219,7 @@ def main(argv):
         )
         trainer.add_event_handler(Events.EPOCH_COMPLETED, checkpointer, {'Model': model})
 
-        max_epoch = FLAGS.epoch
-        trainer.run(train_loader, max_epochs=max_epoch)
+        trainer.run(train_loader, max_epochs=FLAGS.epoch)
         print('LOSS:', model(train_loader))
         END = time.time()
         print('Nice, your Learning Job is done.　Total time is {} sec．'.format(END-START))
