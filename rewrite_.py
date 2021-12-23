@@ -51,6 +51,8 @@ def seq_cnn(seq, plen_size, pro_size):
     gc.collect()
     print('batch normalization after ')
     h = F.dropout(F.leaky_relu(bn_output), p=0.2)  # 1st conv
+    del bn_output
+    gc.collect()
     print('end of 1st conv')
     h = F.avg_pool2d(h, (ja1, 1), stride=sa1, padding=(ja1//2, 0))  # 1st pooling
     h = F.dropout(F.leaky_relu(bn2_pro(conv2_pro(h))), p=0.2)  # 2nd conv
