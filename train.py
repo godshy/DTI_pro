@@ -161,7 +161,7 @@ def main(argv):
         #-------------------------------
         # Set up a neural network to train
         print('Set up a neural network to train', flush=True)
-        model = MV.DeepCNN(FLAGS.pro_size, feature_vector_seq, FLAGS.batch_size, FLAGS.s1, FLAGS.sa1, FLAGS.s2, FLAGS.sa2, FLAGS.s3, FLAGS.sa3, FLAGS.j1, FLAGS.pf1, FLAGS.ja1, FLAGS.j2, FLAGS.pf2, FLAGS.ja2, FLAGS.j3, FLAGS.pf3, FLAGS.ja3, FLAGS.n_hid3, FLAGS.n_hid4, FLAGS.n_hid5, FLAGS.n_out)
+        model = MV.DeepCNN(FLAGS.pro_size, feature_vector_seq,  FLAGS.s1, FLAGS.sa1, FLAGS.s2, FLAGS.sa2, FLAGS.s3, FLAGS.sa3, FLAGS.j1, FLAGS.pf1, FLAGS.ja1, FLAGS.j2, FLAGS.pf2, FLAGS.ja2, FLAGS.j3, FLAGS.pf3, FLAGS.ja3, FLAGS.n_hid3, FLAGS.n_hid4, FLAGS.n_hid5, FLAGS.n_out)
         if torch.cuda.is_available():
             model.cuda()
         # optimizer = chainer.optimizers.MomentumSGD(lr=0.01, momentum=0.9)

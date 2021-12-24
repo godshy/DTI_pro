@@ -22,7 +22,8 @@ import os
 
 
 class DeepCNN(nn.Module):
-    def __init__(self, prosize, plensize, batchsize, s1, sa1, s2, sa2, s3, sa3, j1, pf1, ja1, j2, pf2, ja2, j3, pf3, ja3, n_hid3, n_hid4, n_hid5, n_out, *args, **kwargs):
+    # 5762, 20, 1, 1, 1, 1, 1, 1, 33, 64, 17, 23, 64, 11, 33, 32, 17, 70, 80, 60, 1
+    def __init__(self, prosize, plensize, s1, sa1, s2, sa2, s3, sa3, j1, pf1, ja1, j2, pf2, ja2, j3, pf3, ja3, n_hid3, n_hid4, n_hid5, n_out, *args, **kwargs):
         super(DeepCNN, self).__init__()
         self.conv1_pro=nn.Conv2d(1, pf1, (j1, plensize), stride=s1, padding=(int(j1//2), 0))
         # conv1_pro=nn.Conv2d(1, pf1, (j1, plensize), stride=s1, padding=(j1//2, 0)),
@@ -31,7 +32,9 @@ class DeepCNN(nn.Module):
         self.bn2_pro=nn.BatchNorm2d(pf2)
         self.conv3_pro=nn.Conv2d(pf2, pf3, (j3, 1), stride=s3, padding=(int(j3//2), 0))
         self.bn3_pro=nn.BatchNorm2d(pf3)
+        print('right before fully connect layer')
         self.fc4=nn.Linear(plensize, n_hid4)
+        print('right after fully connect layer')
         self.fc5=nn.Linear(n_hid4, n_hid5)
         self.fc3_pro=nn.Linear(prosize, n_hid3)
         self.fc4_pro=nn.Linear(n_hid3, n_hid4)
