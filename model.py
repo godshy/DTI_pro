@@ -36,7 +36,7 @@ class DeepCNN(nn.Module):
         self.fc4=nn.Linear(plensize, n_hid4)
         print('right after fully connect layer')
         self.fc5=nn.Linear(n_hid4, n_hid5)
-        self.fc3_pro=nn.Linear(prosize, n_hid3)
+        self.fc3_pro=nn.Linear(32, n_hid3)
         self.fc4_pro=nn.Linear(n_hid3, n_hid4)
         self.fc5_pro=nn.Linear(n_hid4, n_hid5)
         self.fc6=nn.Linear(n_hid5, n_out)
@@ -76,9 +76,11 @@ class DeepCNN(nn.Module):
         h = F.dropout(F.leaky_relu(self.bn3_pro(self.conv3_pro(h))), p=0.2)  # 3rd conv
         h = F.avg_pool2d(h, (self.ja3,1), stride=self.sa3, padding=(self.ja3//2, 0))  # 3rd pooling
         h_pro = F.max_pool2d(h, (self.m6,1))  # global max pooling, fingerprint
-        print('h_pro_shape:', h_pro.shape)
+        # h_pro.size: 100, 32, 1, 1
+        # print('h_pro_shape:', h_pro.shape)
         h_pro = F.dropout(F.leaky_relu(self.fc3_pro(h_pro)), p=0.2)# fully connected_1
         #print(h_pro.shape)
+        # h_pro.size: 100, 70
         return h_pro
 
     def cos_similarity(self, fp, seq, n2c, n2p):
