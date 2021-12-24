@@ -34,7 +34,7 @@ class DeepCNN(nn.Module):
         self.conv3_pro=nn.Conv2d(pf2, pf3, (j3, 1), stride=s3, padding=(int(j3//2), 0))
         self.bn3_pro=nn.BatchNorm2d(pf3)
         print('right before fully connect layer')
-        self.fc4=nn.Linear(plensize, n_hid4)
+        self.fc4=nn.Linear(n_hid3, n_hid4)
         print('right after fully connect layer')
         # n_hid3 = 70
         # n_hid4 = 80
@@ -65,6 +65,7 @@ class DeepCNN(nn.Module):
 
     def __call__(self, ecfp, sequences, n2vc, n2vp, interactions):
         z = self.cos_similarity(ecfp, sequences, n2vc, n2vp)
+        print('Z shape:', z.shape)
         Z = self.fc6(z)
         loss = F.cosine_similarity(Z, interactions)
         # loss = tf.compat.v1.losses.sigmoid_cross_entropy(Z, interactions)
