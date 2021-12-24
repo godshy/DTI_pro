@@ -35,6 +35,9 @@ class DeepCNN(nn.Module):
         print('right before fully connect layer')
         self.fc4=nn.Linear(plensize, n_hid4)
         print('right after fully connect layer')
+        # n_hid3 = 70
+        # n_hid4 = 80
+        # n_hid5 = 60
         self.fc5=nn.Linear(n_hid4, n_hid5)
         self.fc3_pro=nn.Linear(32, n_hid3)
         self.fc4_pro=nn.Linear(n_hid3, n_hid4)
@@ -47,11 +50,17 @@ class DeepCNN(nn.Module):
         self.j1, self.ja1, self.j2, self.ja2, self.j3, self.ja3 = j1, ja1, j2, ja2, j3, ja3
 
         self.m1 = (self.prosize+(self.j1//2*2)-self.j1)//self.s1+1
+        print('m1', self.m1)
         self.m2 = (self.m1+(self.ja1//2*2)-self.ja1)//self.sa1+1
+        print('m2', self.m2)
         self.m3 = (self.m2+(self.j2//2*2)-self.j2)//self.s2+1
+        print('m3', self.m3)
         self.m4 = (self.m3+(self.ja2//2*2)-self.ja2)//self.sa2+1
+        print('m4', self.m4)
         self.m5 = (self.m4+(self.j3//2*2)-self.j3)//self.s3+1
+        print('m5', self.m5)
         self.m6 = (self.m5+(self.ja3//2*2)-self.ja3)//self.sa3+1
+        print('m6', self.m6)
 
     def __call__(self, ecfp, sequences, n2vc, n2vp, interactions):
         z = self.cos_similarity(ecfp, sequences, n2vc, n2vp)
