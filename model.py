@@ -22,7 +22,8 @@ import os
 
 
 class DeepCNN(nn.Module):
-    # 5762, 20, 1, 1, 1, 1, 1, 1, 33, 64, 17, 23, 64, 11, 33, 32, 17, 70, 80, 60, 1
+    # prosize: 5762, plensize:20, s1:1, sa1:1, s2:1, sa2:1, s3:1, sa3:1, j1:33, pf1:64, ja1:17, j2:23, pf2:64, ja2:11, j3:33, pf3:32, ja3:17, n_hid3:70, n_hid4:80, n_hid5:60, n_out:1
+    # interactions.shape:  (14196, 1) ecfp.shape:  (14196, 1024) sequences.shape:  (14196, 1, 5762, 20) n2vc.shape: (14196, 128) n2vp.shape: (14196, 128)
     def __init__(self, prosize, plensize, s1, sa1, s2, sa2, s3, sa3, j1, pf1, ja1, j2, pf2, ja2, j3, pf3, ja3, n_hid3, n_hid4, n_hid5, n_out, *args, **kwargs):
         super(DeepCNN, self).__init__()
         self.conv1_pro=nn.Conv2d(1, pf1, (j1, plensize), stride=s1, padding=(int(j1//2), 0))
@@ -42,7 +43,7 @@ class DeepCNN(nn.Module):
         self.fc3_pro=nn.Linear(32, n_hid3)
         self.fc4_pro=nn.Linear(n_hid3, n_hid4)
         self.fc5_pro=nn.Linear(n_hid4, n_hid5)
-        self.fc6=nn.Linear(n_hid5*2, n_out)
+        self.fc6=nn.Linear(n_hid5, n_out)
         print('fully connect over')
         self.n_hid3, self.n_hid4, self.n_hid5, self.n_out = n_hid3, n_hid4, n_hid5, n_out
         self.prosize, self.plensize = prosize, plensize
@@ -50,17 +51,17 @@ class DeepCNN(nn.Module):
         self.j1, self.ja1, self.j2, self.ja2, self.j3, self.ja3 = j1, ja1, j2, ja2, j3, ja3
 
         self.m1 = (self.prosize+(self.j1//2*2)-self.j1)//self.s1+1
-        print('m1', self.m1)
+        # print('m1', self.m1)
         self.m2 = (self.m1+(self.ja1//2*2)-self.ja1)//self.sa1+1
-        print('m2', self.m2)
+        # print('m2', self.m2)
         self.m3 = (self.m2+(self.j2//2*2)-self.j2)//self.s2+1
-        print('m3', self.m3)
+        # print('m3', self.m3)
         self.m4 = (self.m3+(self.ja2//2*2)-self.ja2)//self.sa2+1
-        print('m4', self.m4)
+        # print('m4', self.m4)
         self.m5 = (self.m4+(self.j3//2*2)-self.j3)//self.s3+1
-        print('m5', self.m5)
+        # print('m5', self.m5)
         self.m6 = (self.m5+(self.ja3//2*2)-self.ja3)//self.sa3+1
-        print('m6', self.m6)
+        # print('m6', self.m6)
 
     def __call__(self, ecfp, sequences, n2vc, n2vp, interactions):
         z = self.cos_similarity(ecfp, sequences, n2vc, n2vp)
@@ -79,7 +80,9 @@ class DeepCNN(nn.Module):
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         seq.to(device)
         h = F.dropout(F.leaky_relu(self.bn1_pro(self.conv1_pro(seq))), p=0.2)  # 1st conv
+        print('1st conv:', h.shape)
         h = F.avg_pool2d(h, (self.ja1, 1), stride=self.sa1, padding=(self.ja1//2, 0))  # 1st pooling
+        print('1st pooling:', h.shape)
         h = F.dropout(F.leaky_relu(self.bn2_pro(self.conv2_pro(h))), p=0.2)  # 2nd conv
         h = F.avg_pool2d(h, (self.ja2,1), stride=self.sa2, padding=(self.ja2//2, 0))  # 2nd pooling
         h = F.dropout(F.leaky_relu(self.bn3_pro(self.conv3_pro(h))), p=0.2)  # 3rd conv
@@ -95,6 +98,8 @@ class DeepCNN(nn.Module):
     def cos_similarity(self, fp, seq, n2c, n2p):
         x_compound = fp
         x_protein = self.predict_pro(seq)
+        a = torch.cat((x_compound, n2c))
+        print('xcompound n2c shape:', a.shape)
         x_compound = self.fc4(torch.cat((x_compound, n2c)))
         x_compound = F.dropout(F.leaky_relu(x_compound), p=0.2)
         x_compound = F.dropout(F.leaky_relu(self.fc5(x_compound)), p=0.2)
