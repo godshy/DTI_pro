@@ -123,18 +123,12 @@ def main(argv):
 
         dataset_ecfp = torch.utils.data.DataLoader(ecfp)
         print(type(dataset_ecfp))
-        # dataset_seq = torch.utils.data.DataLoader(sequences)
-        # dataset_n2vc = torch.utils.data.DataLoader(n2vc)
-        # dataset_n2vp = torch.utils.data.DataLoader(n2vp)
-        # dataset_interaction = torch.utils.data.DataLoader(interactions)
         ds_con = torch.utils.data.ConcatDataset([ecfp, sequences, n2vc, n2vp, interactions])
         train_size = int(len(ds_con) * 0.8)
         val_size = int(len(ds_con)) - train_size
         train_dataset, valid_dataset = torch.utils.data.random_split(ds_con, [train_size, val_size])
         train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=FLAGS.batch_size, shuffle=True)
         test_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=FLAGS.batch_size, shuffle=True)
-
-
 
         # train_dataset, valid_dataset = train_dataset[:n], train_dataset[n:]
         # print('train: ', len(train_dataset), flush=True)

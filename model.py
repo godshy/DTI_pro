@@ -39,7 +39,7 @@ class DeepCNN(nn.Module):
         self.fc3_pro=nn.Linear(32, n_hid3)
         self.fc4_pro=nn.Linear(n_hid3, n_hid4)
         self.fc5_pro=nn.Linear(n_hid4, n_hid5)
-        self.fc6=nn.Linear(n_hid5, n_out)
+        self.fc6=nn.Linear(n_hid5*2, n_out)
         print('fully connect over')
         self.n_hid3, self.n_hid4, self.n_hid5, self.n_out = n_hid3, n_hid4, n_hid5, n_out
         self.prosize, self.plensize = prosize, plensize
