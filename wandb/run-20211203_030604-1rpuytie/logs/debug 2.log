@@ -1,0 +1,23 @@
+2021-12-03 03:06:04,704 INFO    MainThread:55373 [wandb_setup.py:_flush():71] setting env: {}
+2021-12-03 03:06:04,704 INFO    MainThread:55373 [wandb_setup.py:_flush():71] setting login settings: {}
+2021-12-03 03:06:04,704 INFO    MainThread:55373 [wandb_init.py:_log_setup():371] Logging user logs to /Users/shy/Library/Mobile Documents/com~apple~CloudDocs/my python programming projects/DTI_pro/wandb/run-20211203_030604-1rpuytie/logs/debug.log
+2021-12-03 03:06:04,704 INFO    MainThread:55373 [wandb_init.py:_log_setup():372] Logging internal logs to /Users/shy/Library/Mobile Documents/com~apple~CloudDocs/my python programming projects/DTI_pro/wandb/run-20211203_030604-1rpuytie/logs/debug-internal.log
+2021-12-03 03:06:04,705 INFO    MainThread:55373 [wandb_init.py:init():404] calling init triggers
+2021-12-03 03:06:04,705 INFO    MainThread:55373 [wandb_init.py:init():411] wandb.init called with sweep_config: {}
+config: {'max_epochs': 150, 'batch_size': 100}
+2021-12-03 03:06:04,705 INFO    MainThread:55373 [wandb_init.py:init():449] starting backend
+2021-12-03 03:06:04,705 INFO    MainThread:55373 [backend.py:_multiprocessing_setup():97] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2021-12-03 03:06:04,725 INFO    MainThread:55373 [backend.py:ensure_launched():199] starting backend process...
+2021-12-03 03:06:04,762 INFO    MainThread:55373 [backend.py:ensure_launched():205] started backend process with pid: 55406
+2021-12-03 03:06:04,770 INFO    MainThread:55373 [wandb_init.py:init():458] backend started and connected
+2021-12-03 03:06:04,776 INFO    MainThread:55373 [wandb_init.py:init():519] updated telemetry
+2021-12-03 03:06:04,823 INFO    MainThread:55373 [wandb_init.py:init():549] communicating current version
+2021-12-03 03:06:06,751 INFO    MainThread:55373 [wandb_init.py:init():554] got version response 
+2021-12-03 03:06:06,767 INFO    MainThread:55373 [wandb_init.py:init():564] communicating run to backend with 30 second timeout
+2021-12-03 03:06:07,029 INFO    MainThread:55373 [wandb_init.py:init():592] starting run threads in backend
+2021-12-03 03:06:10,822 INFO    MainThread:55373 [wandb_run.py:_console_start():1816] atexit reg
+2021-12-03 03:06:10,823 INFO    MainThread:55373 [wandb_run.py:_redirect():1690] redirect: SettingsConsole.REDIRECT
+2021-12-03 03:06:10,823 INFO    MainThread:55373 [wandb_run.py:_redirect():1695] Redirecting console.
+2021-12-03 03:06:10,825 INFO    MainThread:55373 [wandb_run.py:_redirect():1751] Redirects installed.
+2021-12-03 03:06:10,826 INFO    MainThread:55373 [wandb_init.py:init():619] run started, returning control to user process
+2021-12-03 03:06:10,827 INFO    MainThread:55373 [wandb_watch.py:watch():43] Watching

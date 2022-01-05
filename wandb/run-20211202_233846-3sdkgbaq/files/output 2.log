@@ -1,0 +1,49 @@
+Nice, your Learning Job is done.　Total time is 9.614527940750122 sec．
+Making Training dataset...
+Loading labels: train_interaction.npy
+Loading chemIDs: train_chemIDs.npy
+Loading proIDs: train_proIDs.txt
+Loading sequences: train_reprotein.npy
+(14607, 1) (14607, 1024) (14607, 1, 5762, 20) (14607, 128) (14607, 128)
+Now concatenating...
+pattern:  1
+usecpu
+Set up a neural network to train
+Trainer is setting up...
+Nice, your Learning Job is done.　Total time is 15.58392596244812 sec．
+Making Training dataset...
+Loading labels: train_interaction.npy
+Loading chemIDs: train_chemIDs.npy
+Loading proIDs: train_proIDs.txt
+Loading sequences: train_reprotein.npy
+(14343, 1) (14343, 1024) (14343, 1, 5762, 20) (14343, 128) (14343, 128)
+Now concatenating...
+pattern:  2
+usecpu
+Set up a neural network to train
+Trainer is setting up...
+Nice, your Learning Job is done.　Total time is 21.448742151260376 sec．
+Making Training dataset...
+Loading labels: train_interaction.npy
+Loading chemIDs: train_chemIDs.npy
+Loading proIDs: train_proIDs.txt
+Loading sequences: train_reprotein.npy
+(14883, 1) (14883, 1024) (14883, 1, 5762, 20) (14883, 128) (14883, 128)
+Now concatenating...
+pattern:  3
+usecpu
+Set up a neural network to train
+Trainer is setting up...
+Nice, your Learning Job is done.　Total time is 27.76668095588684 sec．
+Making Training dataset...
+Loading labels: train_interaction.npy
+Loading chemIDs: train_chemIDs.npy
+Loading proIDs: train_proIDs.txt
+Loading sequences: train_reprotein.npy
+(15183, 1) (15183, 1024) (15183, 1, 5762, 20) (15183, 128) (15183, 128)
+Now concatenating...
+pattern:  4
+usecpu
+Set up a neural network to train
+Trainer is setting up...
+Nice, your Learning Job is done.　Total time is 34.14822006225586 sec．

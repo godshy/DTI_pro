@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "train.py", line 250, in <module>
+    app.run(main)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/absl/app.py", line 303, in run
+    _run_main(main, args)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/absl/app.py", line 251, in _run_main
+    sys.exit(main(argv))
+  File "train.py", line 194, in main
+    wandb_logger.attach_output_handler(trainer, event_name=Events.ITERATION_COMPLETED, tags="training", output_transform=lambda loss: {"loss": loss})
+  File "/Users/shy/Library/Python/3.7/lib/python/site-packages/ignite/contrib/handlers/base_logger.py", line 235, in attach_output_handler
+    return self.attach(engine, self._create_output_handler(*args, **kwargs), event_name=event_name)
+  File "/Users/shy/Library/Python/3.7/lib/python/site-packages/ignite/contrib/handlers/wandb_logger.py", line 144, in _create_output_handler
+    return OutputHandler(*args, **kwargs)
+TypeError: __init__() got an unexpected keyword argument 'tags'

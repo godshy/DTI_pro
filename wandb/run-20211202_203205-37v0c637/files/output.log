@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "train.py", line 250, in <module>
+    app.run(main)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/absl/app.py", line 303, in run
+    _run_main(main, args)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/absl/app.py", line 251, in _run_main
+    sys.exit(main(argv))
+  File "train.py", line 199, in main
+    trainer.run(train_dataset)
+  File "/Users/shy/Library/Python/3.7/lib/python/site-packages/ignite/engine/engine.py", line 657, in run
+    raise TypeError("Argument data should be iterable")
+TypeError: Argument data should be iterable

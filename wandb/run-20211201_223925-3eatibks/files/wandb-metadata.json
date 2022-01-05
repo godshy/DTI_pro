@@ -1,0 +1,27 @@
+{
+    "os": "Darwin-19.6.0-x86_64-i386-64bit",
+    "python": "3.7.3",
+    "heartbeatAt": "2021-12-01T13:39:29.635138",
+    "startedAt": "2021-12-01T13:39:25.799789",
+    "docker": null,
+    "cpu_count": 12,
+    "cuda": null,
+    "args": [
+        "--input",
+        "./dataset_hard",
+        "--output",
+        "./output"
+    ],
+    "state": "running",
+    "program": "train.py",
+    "codePath": "train.py",
+    "git": {
+        "remote": "https://github.com/godshy/DTI_pro.git",
+        "commit": "1171db5a465ab3d6ad338b6c01e5a65cbfae8fd6"
+    },
+    "email": "asse9653@hotmail.com",
+    "root": "/Users/shy/Library/Mobile Documents/com~apple~CloudDocs/my python programming projects/DTI_pro",
+    "host": "shydeMacBook-Pro.local",
+    "username": "shy",
+    "executable": "/usr/local/bin/python3"
+}

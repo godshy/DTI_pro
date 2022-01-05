@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "train.py", line 254, in <module>
+    app.run(main)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/absl/app.py", line 303, in run
+    _run_main(main, args)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/absl/app.py", line 251, in _run_main
+    sys.exit(main(argv))
+  File "train.py", line 204, in main
+    print('LOSS:', model(ecfp, sequences, n2vc, n2vp, interactions))
+  File "/Users/shy/Library/Mobile Documents/com~apple~CloudDocs/my python programming projects/DTI_pro/model.py", line 54, in __call__
+    z = self.cos_similarity(ecfp, sequences, n2vc, n2vp)
+  File "/Users/shy/Library/Mobile Documents/com~apple~CloudDocs/my python programming projects/DTI_pro/model.py", line 80, in cos_similarity
+    x_protein = self.predict_pro(seq)
+  File "/Users/shy/Library/Mobile Documents/com~apple~CloudDocs/my python programming projects/DTI_pro/model.py", line 66, in predict_pro
+    h = F.dropout(F.leaky_relu(self.bn1_pro(self.conv1_pro(seq))), p=0.2)  # 1st conv
+TypeError: 'tuple' object is not callable

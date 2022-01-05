@@ -1,0 +1,49 @@
+Nice, your Learning Job is done.　Total time is 7.357728958129883 sec．
+Making Training dataset...
+Loading labels: train_interaction.npy
+Loading chemIDs: train_chemIDs.npy
+Loading proIDs: train_proIDs.txt
+Loading sequences: train_reprotein.npy
+(14607, 1) (14607, 1024) (14607, 1, 5762, 20) (14607, 128) (14607, 128)
+Now concatenating...
+<class 'torch.utils.data.dataloader.DataLoader'>
+pattern:  1
+Set up a neural network to train
+Trainer is setting up...
+Nice, your Learning Job is done.　Total time is 13.08552598953247 sec．
+Making Training dataset...
+Loading labels: train_interaction.npy
+Loading chemIDs: train_chemIDs.npy
+Loading proIDs: train_proIDs.txt
+Loading sequences: train_reprotein.npy
+(14343, 1) (14343, 1024) (14343, 1, 5762, 20) (14343, 128) (14343, 128)
+Now concatenating...
+<class 'torch.utils.data.dataloader.DataLoader'>
+pattern:  2
+Set up a neural network to train
+Trainer is setting up...
+Nice, your Learning Job is done.　Total time is 18.020164966583252 sec．
+Making Training dataset...
+Loading labels: train_interaction.npy
+Loading chemIDs: train_chemIDs.npy
+Loading proIDs: train_proIDs.txt
+Loading sequences: train_reprotein.npy
+(14883, 1) (14883, 1024) (14883, 1, 5762, 20) (14883, 128) (14883, 128)
+Now concatenating...
+<class 'torch.utils.data.dataloader.DataLoader'>
+pattern:  3
+Set up a neural network to train
+Trainer is setting up...
+Nice, your Learning Job is done.　Total time is 23.812716007232666 sec．
+Making Training dataset...
+Loading labels: train_interaction.npy
+Loading chemIDs: train_chemIDs.npy
+Loading proIDs: train_proIDs.txt
+Loading sequences: train_reprotein.npy
+(15183, 1) (15183, 1024) (15183, 1, 5762, 20) (15183, 128) (15183, 128)
+Now concatenating...
+<class 'torch.utils.data.dataloader.DataLoader'>
+pattern:  4
+Set up a neural network to train
+Trainer is setting up...
+Nice, your Learning Job is done.　Total time is 29.159698963165283 sec．

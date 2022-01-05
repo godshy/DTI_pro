@@ -1,0 +1,140 @@
+2021-12-01 22:40:26,274 INFO    MainThread:21725 [wandb_setup.py:_flush():71] setting env: {}
+2021-12-01 22:40:26,274 INFO    MainThread:21725 [wandb_setup.py:_flush():71] setting login settings: {}
+2021-12-01 22:40:26,275 INFO    MainThread:21725 [wandb_init.py:_log_setup():371] Logging user logs to /Users/shy/Library/Mobile Documents/com~apple~CloudDocs/my python programming projects/DTI_pro/wandb/run-20211201_224026-2w3so022/logs/debug.log
+2021-12-01 22:40:26,275 INFO    MainThread:21725 [wandb_init.py:_log_setup():372] Logging internal logs to /Users/shy/Library/Mobile Documents/com~apple~CloudDocs/my python programming projects/DTI_pro/wandb/run-20211201_224026-2w3so022/logs/debug-internal.log
+2021-12-01 22:40:26,275 INFO    MainThread:21725 [wandb_init.py:init():404] calling init triggers
+2021-12-01 22:40:26,275 INFO    MainThread:21725 [wandb_init.py:init():411] wandb.init called with sweep_config: {}
+config: {'max_epochs': 150, 'batch_size': 100}
+2021-12-01 22:40:26,275 INFO    MainThread:21725 [wandb_init.py:init():446] wandb.init() called when a run is still active
+2021-12-01 22:40:26,276 INFO    MainThread:21725 [wandb_watch.py:watch():43] Watching
+2021-12-01 22:40:31,209 INFO    MainThread:21725 [wandb_setup.py:_flush():71] setting env: {}
+2021-12-01 22:40:31,209 INFO    MainThread:21725 [wandb_setup.py:_flush():71] setting login settings: {}
+2021-12-01 22:40:31,209 INFO    MainThread:21725 [wandb_init.py:_log_setup():371] Logging user logs to /Users/shy/Library/Mobile Documents/com~apple~CloudDocs/my python programming projects/DTI_pro/wandb/run-20211201_224031-6kb82r1t/logs/debug.log
+2021-12-01 22:40:31,210 INFO    MainThread:21725 [wandb_init.py:_log_setup():372] Logging internal logs to /Users/shy/Library/Mobile Documents/com~apple~CloudDocs/my python programming projects/DTI_pro/wandb/run-20211201_224031-6kb82r1t/logs/debug-internal.log
+2021-12-01 22:40:31,210 INFO    MainThread:21725 [wandb_init.py:init():404] calling init triggers
+2021-12-01 22:40:31,210 INFO    MainThread:21725 [wandb_init.py:init():411] wandb.init called with sweep_config: {}
+config: {'max_epochs': 150, 'batch_size': 100}
+2021-12-01 22:40:31,210 INFO    MainThread:21725 [wandb_init.py:init():446] wandb.init() called when a run is still active
+2021-12-01 22:40:31,211 INFO    MainThread:21725 [wandb_watch.py:watch():43] Watching
+2021-12-01 22:40:37,001 INFO    MainThread:21725 [wandb_setup.py:_flush():71] setting env: {}
+2021-12-01 22:40:37,002 INFO    MainThread:21725 [wandb_setup.py:_flush():71] setting login settings: {}
+2021-12-01 22:40:37,002 INFO    MainThread:21725 [wandb_init.py:_log_setup():371] Logging user logs to /Users/shy/Library/Mobile Documents/com~apple~CloudDocs/my python programming projects/DTI_pro/wandb/run-20211201_224036-1tl6yp6q/logs/debug.log
+2021-12-01 22:40:37,002 INFO    MainThread:21725 [wandb_init.py:_log_setup():372] Logging internal logs to /Users/shy/Library/Mobile Documents/com~apple~CloudDocs/my python programming projects/DTI_pro/wandb/run-20211201_224036-1tl6yp6q/logs/debug-internal.log
+2021-12-01 22:40:37,002 INFO    MainThread:21725 [wandb_init.py:init():404] calling init triggers
+2021-12-01 22:40:37,002 INFO    MainThread:21725 [wandb_init.py:init():411] wandb.init called with sweep_config: {}
+config: {'max_epochs': 150, 'batch_size': 100}
+2021-12-01 22:40:37,003 INFO    MainThread:21725 [wandb_init.py:init():446] wandb.init() called when a run is still active
+2021-12-01 22:40:37,003 INFO    MainThread:21725 [wandb_watch.py:watch():43] Watching
+2021-12-01 22:40:42,347 INFO    MainThread:21725 [wandb_setup.py:_flush():71] setting env: {}
+2021-12-01 22:40:42,348 INFO    MainThread:21725 [wandb_setup.py:_flush():71] setting login settings: {}
+2021-12-01 22:40:42,349 INFO    MainThread:21725 [wandb_init.py:_log_setup():371] Logging user logs to /Users/shy/Library/Mobile Documents/com~apple~CloudDocs/my python programming projects/DTI_pro/wandb/run-20211201_224042-3n5trdgz/logs/debug.log
+2021-12-01 22:40:42,349 INFO    MainThread:21725 [wandb_init.py:_log_setup():372] Logging internal logs to /Users/shy/Library/Mobile Documents/com~apple~CloudDocs/my python programming projects/DTI_pro/wandb/run-20211201_224042-3n5trdgz/logs/debug-internal.log
+2021-12-01 22:40:42,349 INFO    MainThread:21725 [wandb_init.py:init():404] calling init triggers
+2021-12-01 22:40:42,349 INFO    MainThread:21725 [wandb_init.py:init():411] wandb.init called with sweep_config: {}
+config: {'max_epochs': 150, 'batch_size': 100}
+2021-12-01 22:40:42,349 INFO    MainThread:21725 [wandb_init.py:init():446] wandb.init() called when a run is still active
+2021-12-01 22:40:42,350 INFO    MainThread:21725 [wandb_watch.py:watch():43] Watching
+2021-12-01 22:40:42,645 INFO    MainThread:21725 [wandb_run.py:_atexit_cleanup():1786] got exitcode: 0
+2021-12-01 22:40:42,646 INFO    MainThread:21725 [wandb_run.py:_restore():1758] restore
+2021-12-01 22:40:45,463 INFO    MainThread:21725 [wandb_run.py:_wait_for_finish():1916] got exit ret: file_counts {
+  wandb_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 802
+  total_bytes: 802
+}
+
+2021-12-01 22:40:45,703 INFO    MainThread:21725 [wandb_run.py:_wait_for_finish():1916] got exit ret: file_counts {
+  wandb_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 802
+  total_bytes: 802
+}
+
+2021-12-01 22:40:45,810 INFO    MainThread:21725 [wandb_run.py:_wait_for_finish():1916] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 802
+  total_bytes: 7309
+}
+
+2021-12-01 22:40:45,912 INFO    MainThread:21725 [wandb_run.py:_wait_for_finish():1916] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 802
+  total_bytes: 7309
+}
+
+2021-12-01 22:40:46,015 INFO    MainThread:21725 [wandb_run.py:_wait_for_finish():1916] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 802
+  total_bytes: 7309
+}
+
+2021-12-01 22:40:46,122 INFO    MainThread:21725 [wandb_run.py:_wait_for_finish():1916] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 7309
+  total_bytes: 7309
+}
+
+2021-12-01 22:40:46,224 INFO    MainThread:21725 [wandb_run.py:_wait_for_finish():1916] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 7309
+  total_bytes: 7309
+}
+
+2021-12-01 22:40:46,327 INFO    MainThread:21725 [wandb_run.py:_wait_for_finish():1916] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 7309
+  total_bytes: 7309
+}
+
+2021-12-01 22:40:46,430 INFO    MainThread:21725 [wandb_run.py:_wait_for_finish():1916] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 7309
+  total_bytes: 7309
+}
+
+2021-12-01 22:40:46,533 INFO    MainThread:21725 [wandb_run.py:_wait_for_finish():1916] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 7309
+  total_bytes: 7309
+}
+
+2021-12-01 22:40:47,005 INFO    MainThread:21725 [wandb_run.py:_wait_for_finish():1916] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 7309
+  total_bytes: 7309
+}
+
+2021-12-01 22:40:47,501 INFO    MainThread:21725 [wandb_run.py:_wait_for_finish():1916] got exit ret: done: true
+exit_result {
+}
+file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 7309
+  total_bytes: 7309
+}
+local_info {
+}
+
+2021-12-01 22:40:48,852 INFO    MainThread:21725 [wandb_run.py:_append_files():2184] logging synced files

@@ -1,0 +1,26 @@
+Traceback (most recent call last):
+  File "train.py", line 254, in <module>
+    app.run(main)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/absl/app.py", line 303, in run
+    _run_main(main, args)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/absl/app.py", line 251, in _run_main
+    sys.exit(main(argv))
+  File "train.py", line 204, in main
+    print('LOSS:', model(ecfp, sequences, n2vc, n2vp, interactions))
+  File "/Users/shy/Library/Mobile Documents/com~apple~CloudDocs/my python programming projects/DTI_pro/model.py", line 54, in __call__
+    z = self.cos_similarity(ecfp, sequences, n2vc, n2vp)
+  File "/Users/shy/Library/Mobile Documents/com~apple~CloudDocs/my python programming projects/DTI_pro/model.py", line 82, in cos_similarity
+    x_protein = self.predict_pro(seq)
+  File "/Users/shy/Library/Mobile Documents/com~apple~CloudDocs/my python programming projects/DTI_pro/model.py", line 66, in predict_pro
+    output = self.conv1_pro(seq)
+  File "/Users/shy/Library/Python/3.7/lib/python/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/Users/shy/Library/Python/3.7/lib/python/site-packages/torch/nn/modules/conv.py", line 446, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+  File "/Users/shy/Library/Python/3.7/lib/python/site-packages/torch/nn/modules/conv.py", line 443, in _conv_forward
+    self.padding, self.dilation, self.groups)
+TypeError: conv2d() received an invalid combination of arguments - got (numpy.ndarray, Parameter, Parameter, tuple, tuple, tuple, int), but expected one of:
+ * (Tensor input, Tensor weight, Tensor bias, tuple of ints stride, tuple of ints padding, tuple of ints dilation, int groups)
+      didn't match because some of the arguments have invalid types: ([31mnumpy.ndarray[39m, [31mParameter[39m, [31mParameter[39m, [31mtuple[39m, [31mtuple[39m, [31mtuple[39m, [32mint[39m)
+ * (Tensor input, Tensor weight, Tensor bias, tuple of ints stride, str padding, tuple of ints dilation, int groups)
+      didn't match because some of the arguments have invalid types: ([31mnumpy.ndarray[39m, [31mParameter[39m, [31mParameter[39m, [31mtuple[39m, [31mtuple[39m, [31mtuple[39m, [32mint[39m)
