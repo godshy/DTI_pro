@@ -61,6 +61,9 @@ def main(argv):
         print('GPU mode')
         print('Is cuda available:  ', torch.cuda.is_available())
 
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print('use'+device)
+
     for i in range(5):
         #  making feature vectors of seq, one-hot encoding
 
