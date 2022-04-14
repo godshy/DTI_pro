@@ -7,7 +7,7 @@ from torch.utils.data import TensorDataset, ConcatDataset, DataLoader
 import torch.nn.functional as F
 from absl import app
 from absl import flags
-from ignite.metrics import Accuracy, Loss
+#from ignite.metrics import Accuracy, Loss
 import numpy as np
 import model as MV
 from ignite.engine import Events, create_supervised_trainer, create_supervised_evaluator
@@ -69,8 +69,8 @@ def main(argv):
     del argv  # Unused.
     print(FLAGS.gpu)
     print('GPU: ', FLAGS.gpu)
-    print('# Minibatch-size: ', FLAGS.batch_size)
-    print('')
+    print('Minibatch-size: ', FLAGS.batch_size)
+
 
     #-------------------------------
     # GPU check
