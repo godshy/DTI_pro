@@ -113,6 +113,37 @@ class DeepCNN(nn.Module):
         return y
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     #  conv1_pro=L.Convolution2D(1, pf1, (j1, plensize), stride=s1, pad = (j1//2,0)),
 
 ''' 
