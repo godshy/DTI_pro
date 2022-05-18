@@ -9,6 +9,8 @@ import networkx as nx
 import pandas as pd
 import pygraphviz as pgv
 import numpy as np
+from node2vec import Node2Vec
+import pickle
 import matplotlib.pyplot as plt
 from PIL import Image
 # Image.MAX_IMAGE_PIXELS = 3075432330
@@ -52,7 +54,7 @@ G.add_nodes_from(node_compound, bipartite=1, color='green')
 G.add_edges_from(edges)
 
 # In[35]:
-G_new = pgv.AGraph(directed=True)
+G_new = pgv.AGraph(directed=False)
 G_new.add_nodes_from(node_organism, bipartite=0, color='red')
 G_new.add_nodes_from(node_compound, bipartite=1, color='green')
 G_new.add_edges_from(edges)
@@ -84,5 +86,41 @@ print('node of compound:', len(node_compound_noduplicate))
 print('node of organism:', len(node_organism_noduplicate))
 print('mean degrees of compounds: ', np.mean(degree_compound))
 print('mean degrees of organism:', np.mean(degree_organism))
+nx.write_graphml(G, "test.graphml")
+
+
+print('END')
+'''
+# Precompute probabilities and generate walks
+node2vec = Node2Vec(G)
+# Embed
+model = node2vec.fit()  # Any keywords acceptable by gensim.Word2Vec can be passed, `diemnsions` and `workers` are automatically passed (from the Node2Vec constructor)
+
+# Save the model of Node2vec
+with open('o2c.pickle', mode='wb') as f:
+    pickle.dump(model, f)
 print('END')
 
+
+
+def save_graph(graph, file_name):
+    #initialze Figure
+    plt.figure(num=None, figsize=(20, 20), dpi=80)
+    plt.axis('off')
+    fig = plt.figure(1)
+    pos = nx.spring_layout(graph)
+    nx.draw_networkx_nodes(graph, pos)
+    nx.draw_networkx_edges(graph, pos)
+    nx.draw_networkx_labels(graph, pos)
+
+    cut = 1.00
+    xmax = cut * max(xx for xx, yy in pos.values())
+    ymax = cut * max(yy for xx, yy in pos.values())
+    plt.xlim(0, xmax)
+    plt.ylim(0, ymax)
+
+    plt.savefig(file_name,bbox_inches="tight")
+    plt.close()
+save_graph(G, "my_graph_new.pdf")
+save_graph(G_new, "my_graph_new.pdf")
+'''
