@@ -1,7 +1,5 @@
-import networkx as nx
-import pandas as pd
+
 import numpy as np
-# from node2vec import Node2Vec
 
 from rdkit import Chem
 from rdkit.Chem import AllChem
